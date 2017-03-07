@@ -11926,7 +11926,7 @@ Standard deviation of prices: $165,171.13
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-RM: The increase of numbers of rooms won't necesarly reflect into an increase of the MEDV of the house. To expect an increase in the MEDV of the house I think an incease in the square footage will be needed.</p>
+RM: The increase of numbers of rooms won't necesarly reflect into an increase of the MEDV of the house. To expect an increase in the MEDV of the house I think an incease in the square footage will be needed. But after looking at the graph we can see a correlation between a price increase and an increase in the number of rooms.</p>
 <p>LSTAT: Most of the times in a neighborhood with a large percenteange of lower class homeowners the prices of the houses tend to decrease due to several facorts like a high number of foreclosures, a high crimal rate in the area, etc.</p>
 <p>PTRATIO: If the ratio of students to teachers increases it could affect the school district of the comunity because the teachers will not be able to spend as much time with each student.</p>
 
@@ -13224,7 +13224,7 @@ KCIiIiIi+kY6QBERERER0TfSAYqIiIiIiL7xP/vTX2tN6NQrAAAAAElFTkSuQmCC
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong> 
 learning curve - max_depth = 6
-We can see that as the number of training points are added the model the performance increases. We can see that the testing curve gets slightly when more training points are introduced. We can also see that after adding around 200 training points the performance of the model does not get any better, so it won't be beneficial having more training points in this case.</p>
+We can see that as the number of training points are added the model the performance increases. We also can see that the testing curve gets slightly better when more training points are introduced.  It can also be seen that after more than 200 training points the performance of the model does not get any better, so it won't be beneficial having more training points in this case.</p>
 
 </div>
 </div>
@@ -13683,8 +13683,8 @@ McaYoGFJzxhjTNCwpGeMMSZoWNIzxhgTNCzpGWOMCRr/D1fxxnU63wmhAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-When the model is trained with a maximun depth of 1 the model suffers of bias because we can see in the graph that training and testing errors almost meet. This could mean that the model is under fitted. 
-When the model is trained with a maximun depth of 10 we can see a huge gap between the training curve and the testing curve this means that the model suffers of high variance.</p>
+When the model is trained with a maximun depth of 1 the model suffers of bias because we can see in the graph that training and testing errors almost meet. The training and validation scores are low compared to other points.</p>
+<p>When the model is trained with a maximun depth of 10 we can see a huge gap between the training curve and the testing curve this means that the model suffers of high variance.The training validation score is smaller than the testing score. The testing score is almost zero and the validation score keeps getting smaller, these suggets over-fitting.</p>
 
 </div>
 </div>
@@ -13705,7 +13705,7 @@ When the model is trained with a maximun depth of 10 we can see a huge gap betwe
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-We can see that when model is trained with a maximun depth between 2- 4 both the testing and training curve intersects at the similar values. We can also see that the gap between the training and testing curves at maximun depth between 2-4 is small.</p>
+We can see that when model is trained with a maximun depth 4 both the testing and training curve intersects at the similar values. The reason is that the graph shows that the gap between the training and testing curves at maximun depth 4 is smaller compared to other points in the graph.</p>
 
 </div>
 </div>
@@ -13738,6 +13738,7 @@ We can see that when model is trained with a maximun depth between 2- 4 both the
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
 Grid search is a technique to automate working with multplie combinations of parameters to obtain the best tune which gives the the best performance. This is useful because avoid developers to manually test and tune this parameters.</p>
+<p>In scikit-learn the grid search technique uses two approaches, an exhaustively(GridSearchCV) approach takes into consideration all parameter combinations, the a random approach(RandomizedSearchCV) can sample a given number of candidates from a parameter space with a specified distribution.</p>
 
 </div>
 </div>
@@ -13759,7 +13760,8 @@ Grid search is a technique to automate working with multplie combinations of par
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-The k-fold validation technique consists in partiont the dataset in kth number of bins and run kth separate experiments and then average  the kth results perfomances. This technique requires more compute time but the results is more acurate because you use all the data for training and testing.</p>
+The k-fold validation technique consists in partition of the dataset in kth number of bins and run kth separate experiments, then iterate through the kth bins one by one and use the current bin for model validation and the remaining kth-1 chunks for training.  The process then average the kth results perfomances and calculates a validation, at the end we end up with a single validation score.</p>
+<p>The kth fold validation it's more accurate because each k bin it's used to trained and test the model.This technique requires more compute time but the results is more acurate because you use all the data for training and testing.</p>
 
 </div>
 </div>
