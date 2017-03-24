@@ -11854,7 +11854,7 @@ Classification would be the best type of supervised learning to solve this probl
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[72]:</div>
+<div class="prompt input_prompt">In&nbsp;[106]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Calculate number of students</span>
@@ -11862,8 +11862,8 @@ Classification would be the best type of supervised learning to solve this probl
 <span class="n">n_students</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">student_data</span><span class="p">)</span>
 <span class="c1">#print student_data</span>
 
-<span class="c1"># TODO: Calculate number of features</span>
-<span class="n">n_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="c1"># TODO: Calculate number of features, one target column</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
 
 <span class="c1"># TODO: Calculate passing students</span>
 <span class="n">n_passed</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span><span class="p">])</span>
@@ -11893,7 +11893,7 @@ Classification would be the best type of supervised learning to solve this probl
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Total number of students: 395
-Number of features: 31
+Number of features: 30
 Number of students who passed: 265
 Number of students who failed: 130
 Graduation rate of the class: 67.09%
@@ -12296,7 +12296,7 @@ SVM work well with complicated models, the student intervention problem is a com
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[90]:</div>
+<div class="prompt input_prompt">In&nbsp;[116]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import the three supervised learning models from sklearn</span>
@@ -12304,10 +12304,12 @@ SVM work well with complicated models, the student intervention problem is a com
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
 
+<span class="n">ran_state</span> <span class="o">=</span> <span class="mi">40</span>
 <span class="c1"># TODO: Initialize the three models</span>
-<span class="n">clf_A</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">clf_A</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">ran_state</span><span class="p">)</span>
 <span class="n">clf_B</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="n">clf_C</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">clf_C</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">ran_state</span><span class="p">)</span>
+<span class="n">classifiers_array</span> <span class="o">=</span> <span class="p">[</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">clf_B</span><span class="p">,</span> <span class="n">clf_C</span><span class="p">]</span>
 
 <span class="c1"># TODO: Set up the training set sizes</span>
 <span class="n">X_train_100</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
@@ -12319,25 +12321,20 @@ SVM work well with complicated models, the student intervention problem is a com
 <span class="n">X_train_300</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">]</span>
 <span class="n">y_train_300</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[:</span><span class="mi">300</span><span class="p">]</span>
 
+<span class="n">sets_array</span> <span class="o">=</span> <span class="p">[(</span><span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">),</span> <span class="p">(</span><span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">),</span> <span class="p">(</span><span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">)]</span>
+
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train_100</span><span class="p">)</span>
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_train_100</span><span class="p">)</span>
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
 
+
 <span class="c1"># TODO: Execute the &#39;train_predict&#39; function for each classifier and each training set size</span>
 <span class="c1"># train_predict(clf, X_train, y_train, X_test, y_test)</span>
-<span class="c1">#DecisionTreeClassifier</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_A</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="c1">#GaussianNB</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_B</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="c1">#SVC</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_100</span><span class="p">,</span> <span class="n">y_train_100</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_200</span><span class="p">,</span> <span class="n">y_train_200</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">train_predict</span><span class="p">(</span><span class="n">clf_C</span><span class="p">,</span> <span class="n">X_train_300</span><span class="p">,</span> <span class="n">y_train_300</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">classifier</span> <span class="ow">in</span> <span class="n">classifiers_array</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s2">&quot;------------------------------------------------------------------------&quot;</span>
+    <span class="k">for</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">sets_array</span><span class="p">:</span>
+        <span class="n">train_predict</span><span class="p">(</span><span class="n">classifier</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12354,59 +12351,62 @@ SVM work well with complicated models, the student intervention problem is a com
 100
 95
 95
+------------------------------------------------------------------------
 Training a DecisionTreeClassifier using a training set size of 100. . .
-Trained model in 0.0009 seconds
-Made predictions in 0.0002 seconds.
+Trained model in 0.0010 seconds
+Made predictions in 0.0003 seconds.
 F1 score for training set: 1.0000.
-Made predictions in 0.0002 seconds.
-F1 score for test set: 0.6903.
+Made predictions in 0.0003 seconds.
+F1 score for test set: 0.7049.
 Training a DecisionTreeClassifier using a training set size of 200. . .
-Trained model in 0.0013 seconds
+Trained model in 0.0020 seconds
+Made predictions in 0.0003 seconds.
+F1 score for training set: 1.0000.
+Made predictions in 0.0004 seconds.
+F1 score for test set: 0.7132.
+Training a DecisionTreeClassifier using a training set size of 300. . .
+Trained model in 0.0019 seconds
 Made predictions in 0.0002 seconds.
 F1 score for training set: 1.0000.
 Made predictions in 0.0002 seconds.
 F1 score for test set: 0.7273.
-Training a DecisionTreeClassifier using a training set size of 300. . .
-Trained model in 0.0100 seconds
-Made predictions in 0.0003 seconds.
-F1 score for training set: 1.0000.
-Made predictions in 0.0002 seconds.
-F1 score for test set: 0.7350.
+------------------------------------------------------------------------
 Training a GaussianNB using a training set size of 100. . .
-Trained model in 0.0006 seconds
+Trained model in 0.0028 seconds
 Made predictions in 0.0003 seconds.
 F1 score for training set: 0.8550.
-Made predictions in 0.0003 seconds.
+Made predictions in 0.0005 seconds.
 F1 score for test set: 0.7481.
 Training a GaussianNB using a training set size of 200. . .
-Trained model in 0.0007 seconds
-Made predictions in 0.0005 seconds.
+Trained model in 0.0010 seconds
+Made predictions in 0.0004 seconds.
 F1 score for training set: 0.8321.
-Made predictions in 0.0005 seconds.
+Made predictions in 0.0003 seconds.
 F1 score for test set: 0.7132.
 Training a GaussianNB using a training set size of 300. . .
-Trained model in 0.0012 seconds
-Made predictions in 0.0006 seconds.
+Trained model in 0.0030 seconds
+Made predictions in 0.0004 seconds.
 F1 score for training set: 0.8088.
-Made predictions in 0.0003 seconds.
+Made predictions in 0.0004 seconds.
 F1 score for test set: 0.7500.
+------------------------------------------------------------------------
 Training a SVC using a training set size of 100. . .
-Trained model in 0.0016 seconds
-Made predictions in 0.0010 seconds.
+Trained model in 0.0014 seconds
+Made predictions in 0.0013 seconds.
 F1 score for training set: 0.8591.
-Made predictions in 0.0008 seconds.
+Made predictions in 0.0010 seconds.
 F1 score for test set: 0.7838.
 Training a SVC using a training set size of 200. . .
-Trained model in 0.0114 seconds
-Made predictions in 0.0026 seconds.
+Trained model in 0.0047 seconds
+Made predictions in 0.0029 seconds.
 F1 score for training set: 0.8693.
-Made predictions in 0.0013 seconds.
+Made predictions in 0.0063 seconds.
 F1 score for test set: 0.7755.
 Training a SVC using a training set size of 300. . .
-Trained model in 0.0112 seconds
-Made predictions in 0.0084 seconds.
+Trained model in 0.0115 seconds
+Made predictions in 0.0204 seconds.
 F1 score for training set: 0.8692.
-Made predictions in 0.0017 seconds.
+Made predictions in 0.0055 seconds.
 F1 score for test set: 0.7586.
 </pre>
 </div>
@@ -12585,11 +12585,7 @@ The Support Vector Machines model seems to be the best model. SVM compared with 
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
 The model created using Support Vector Machines works in the following way:
-In order to predict if a student is most likely to pass or fail to graduate.</p>
-<p>1.- First we need to look at the data collected and try to understand if all the attributes are usefull, if see that some columns don't provide any value we can just don't use them(drop it). For instance the dataset could cotain columns about students that will not help to determine if they are likely to pass or fail, we only want to include attributes(features) that are going to help in to predict unseen data.
-2.- Then we need to separate our data into different buckets, one bucket of data will be used to train(features and labels) our model and a testing bucket(features and labels), the testing set will be used to test how accurate our model is. 
-3.- The next step is train our SVM model using the bucket of data previously separated for training purpuses. Our model will plot data points(features and labels) to try to find a function that produces the best line that splits the data(maximizing the margin).
-4.- In the next step we test our model using the bucket of data we previously separated for testing. If we're not happy with test result, we can tune some parameters in our model and repeat steps 3 and 4 until we obtained a better result.</p>
+In order to predict if a student is likely to pass or fail to graduate, the admision office needs to learn from past experiences in order to create a model that will predict the chances of graduating. Each student circumstances are different, but there might be some common characteristics that increases the likelihood of graduation. The admission office needs to collect information about the students that successfully pass or failed to graduate. Information about students like, 'sex', 'age', 'address', 'family size', 'mother job', 'study time', and if the student graduated or not can describe a common pattern, our model will try to find this pattern. For example, it could be possible that students between 24 and 26, with a study time more than 10 hours a week are more likely to graduate than students younger than 24 years old and with a study time less than 10 hours a week. There could be multiple combinations and multiple values for the information about the students sucessfull rate to graduate. Once our model analizes all possible combinations, it will try to find the best combination of characteristics that will splits the students into two groups, pass or failed to graduate. By using this model the university will be able to input into to the model information about potential new students and predict if the students is likely to graduate or not. The model won't be perfect at first, multiple iterations of testing and adjusting some paramets are needed to come up with a model that predicts accurately this problem.</p>
 
 </div>
 </div>
@@ -12620,7 +12616,7 @@ In order to predict if a student is most likely to pass or fail to graduate.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[105]:</div>
+<div class="prompt input_prompt">In&nbsp;[114]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import &#39;GridSearchCV&#39; and &#39;make_scorer&#39;</span>
@@ -12632,13 +12628,13 @@ In order to predict if a student is most likely to pass or fail to graduate.</p>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;kernel&#39;</span><span class="p">:(</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="s1">&#39;poly&#39;</span><span class="p">,</span> <span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">]}</span>
 
 <span class="c1"># TODO: Initialize the classifier</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">ran_state</span><span class="p">)</span>
 
 <span class="c1"># TODO: Make an f1 scoring function using &#39;make_scorer&#39; </span>
 <span class="n">f1_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="s1">&#39;yes&#39;</span><span class="p">)</span>
 
 <span class="c1"># TODO: Perform grid search on the classifier using the f1_scorer as the scoring method</span>
-<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+<span class="n">grid_obj</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">f1_scorer</span><span class="p">)</span>
 
 <span class="c1"># TODO: Fit the grid search object to the training data and find the optimal parameters</span>
 <span class="n">grid_obj</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -12661,9 +12657,9 @@ In order to predict if a student is most likely to pass or fail to graduate.</p>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Made predictions in 0.0058 seconds.
+<pre>Made predictions in 0.0036 seconds.
 Tuned model has a training F1 score of 0.8142.
-Made predictions in 0.0017 seconds.
+Made predictions in 0.0012 seconds.
 Tuned model has a testing F1 score of 0.7662.
 </pre>
 </div>
