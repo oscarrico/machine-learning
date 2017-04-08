@@ -12163,8 +12163,7 @@ The last customer is way under the mean value in all of the categories. I think 
 <li>Detergents_Paper:0.80018664153110453</li>
 <li>Delicatessen: -0.33863397756639468</li>
 </ul>
-<p>First I tried getting the scores of Fresh, Milk,and Frozen categories as I thought these are categories that group the more numbers of products at whosale stores. But I was surprised at low scores that they provied. Then I moved to Grocery and Detergents_Paper. Grocery has the highest R2 score with 0.83, this feature will definitely help to identify the customer spending habits.  We can also see that the score for "Detergents_Paper" is .80, so to better predict the customer spending habits we probably should consider both features "Grocerry" and "Detergents_Paper".</p>
-<p>Note: (code updated, as you can see I reported correctly that grocery haf the highest R2 score, as I was testing the other features I forgot to set the code back to "Grocery").</p>
+<p>First I tried getting the scores of Fresh, Milk,and Frozen categories as I thought these are categories that group the more numbers of products at whosale stores. But I was surprised at low scores that they provied. Then I moved to Grocery and Detergents_Paper. Grocery has the highest R2 score with 0.83.  We can also see that the score for "Detergents_Paper" is .80.  "Grocerry" and "Detergents_Paper" are the easiest to predict from the data so this means that these two features are the least necesary for identifying spending habits.</p>
 
 </div>
 </div>
@@ -20706,7 +20705,7 @@ Customer index 100 - predicted to be Cluster 0 (convenience store): The predicti
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
 A change in the delivery service from 5 days a week to 3 days a week, could be painful for customers in both Segments, but specially for customers in "Segment 0". The customers in customers in this segment, buy high quantities of perishable products (Fresh, Milk, Grocery). To avoid shipping expired products to customers the wholesale department would have to better control on the stocks and expiration dates of the products, this might be a expensive task to coordinate. Customers in Segment 1 should not be as impacted as there not as many perishable products in this segment.</p>
-<p>The wholesale store can test than changing the delivery dates to 3 per week, to a small set of customers that doens't order many products from the "Fresh" category. After this test, the wholesale company can conduct a survey to evaluate the result of this experiment. Once this experiment is over, the company should evaluate if is a good idea to test the change in delivery to a different segment of customers.</p>
+<p>The wholesale store can test than changing the delivery dates to 3 per week, to a small set of customers of each segment. After this test, the wholesale company can conduct a survey to evaluate the result of this experiment. Once this experiment is over, the company should evaluate if is a good idea to test the change in delivery to a bigger sample test of customer in each segment.</p>
 
 </div>
 </div>
@@ -20730,7 +20729,16 @@ A change in the delivery service from 5 days a week to 3 days a week, could be p
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
 Based on the provided anual spending estimates a supervised model could be train to predict which would be the most appropiate delivery service. The model should also consider the which is the type of products the new customers are going to buy, as we saw the category of the products will help to determine which segment the customers are assigned to.</p>
-<p>Using the result of the customer assigment to a  cluster could be used as a feature. This new feature could be used as an input variable for a new model to come up with new predictions like the type of customer, most most like category of products to purchase.</p>
+<p>Using the result of the customer assigment to a  cluster could be used as a feature. This new feature could be used as an input variable for a new model to come up with new predictions like the type of customer, most most like category of products to purchase. We could use a supervised learning algorithm using the product spending in the different categories as features:</p>
+<ul>
+<li>Fresh</li>
+<li>Milk</li>
+<li>Grocery</li>
+<li>Frozen</li>
+<li>Detergents_Paper</li>
+<li>Delicatessen</li>
+</ul>
+<p>The target variable should be the customer segment.</p>
 
 </div>
 </div>
