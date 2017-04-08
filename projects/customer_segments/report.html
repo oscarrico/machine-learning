@@ -12096,15 +12096,15 @@ The last customer is way under the mean value in all of the categories. I think 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[86]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeRegressor</span>
 
 <span class="c1"># TODO: Make a copy of the DataFrame, using the &#39;drop&#39; function to drop the given feature</span>
-<span class="n">array</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Delicatessen&#39;</span><span class="p">]</span>
-<span class="n">new_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Delicatessen&#39;</span><span class="p">],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Grocery&#39;</span><span class="p">]</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;Grocery&#39;</span><span class="p">],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># TODO: Split the data into training and testing sets using the given feature as the target</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
@@ -12128,7 +12128,7 @@ The last customer is way under the mean value in all of the categories. I think 
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(&#39;Score: &#39;, -0.33863397756639468)
+<pre>(&#39;Score: &#39;, 0.83409569770770098)
 </pre>
 </div>
 </div>
@@ -12163,7 +12163,8 @@ The last customer is way under the mean value in all of the categories. I think 
 <li>Detergents_Paper:0.80018664153110453</li>
 <li>Delicatessen: -0.33863397756639468</li>
 </ul>
-<p>First I tried getting the scores of Fresh, Milk,and Frozen categories as I thought these are categories that group the more numbers of products at whosale stores. But I was surprised at low scores that they provied. Then I moved to Grocery and Detergents_Paper. Grocery has the highest R2 score with 0.83, this feature will definitely help to identify the customer spending habits.</p>
+<p>First I tried getting the scores of Fresh, Milk,and Frozen categories as I thought these are categories that group the more numbers of products at whosale stores. But I was surprised at low scores that they provied. Then I moved to Grocery and Detergents_Paper. Grocery has the highest R2 score with 0.83, this feature will definitely help to identify the customer spending habits.  We can also see that the score for "Detergents_Paper" is .80, so to better predict the customer spending habits we probably should consider both features "Grocerry" and "Detergents_Paper".</p>
+<p>Note: (code updated, as you can see I reported correctly that grocery haf the highest R2 score, as I was testing the other features I forgot to set the code back to "Grocery").</p>
 
 </div>
 </div>
@@ -13677,7 +13678,7 @@ SUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-Detergents_Paper and Grocery seems to be correlatted. The viazualitaion confirmed that Grocery and Dergents_Paper categories are correlatted. It also can be seen that there is no correlation between Grocery, Detergents_Paper and the other categories, so it would be safe to use either Grocery or Detergents_Paper category to predict.</p>
+Detergents_Paper and Grocery seems to be correlatted. The viazualitaion confirmed that Grocery and Dergents_Paper categories are correlatted. It also can be seen that there is no correlation between Grocery, Detergents_Paper and the other categories, so it would be safe to use either Grocery or Detergents_Paper category to predict. We can also see that the all the features have a long right tail which represents a right-skewed distribution.</p>
 
 </div>
 </div>
@@ -17988,7 +17989,7 @@ For each feature there were indentified several datapoints however some of the p
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[91]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Apply PCA by fitting the good data with the same number of dimensions as features</span>
@@ -18001,6 +18002,7 @@ For each feature there were indentified several datapoints however some of the p
 
 <span class="c1"># Generate PCA results plot</span>
 <span class="n">pca_results</span> <span class="o">=</span> <span class="n">vs</span><span class="o">.</span><span class="n">pca_results</span><span class="p">(</span><span class="n">good_data</span><span class="p">,</span> <span class="n">pca</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -18010,6 +18012,13 @@ For each feature there were indentified several datapoints however some of the p
 <div class="output_wrapper">
 <div class="output">
 
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[ 0.44302505  0.70681723  0.82988103  0.93109011  0.97959207  1.        ]
+</pre>
+</div>
+</div>
 
 <div class="output_area"><div class="prompt"></div>
 
@@ -18339,7 +18348,7 @@ NKsAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-The first principal component has a highest variance (44.30%) while the second princial has the second highest variant(26.38%) from the 6 principal components calculated. We can see that the first principal component that 3 features seem to be correlated (Detergents_Paper, Grocery and Milk). In the second principal component does not overlap the first princial component as the features here are features here are Fresh, Frozen and Delicatessen. The variance combianed from the first and second principal components is 70.68% and if the third principal component the variance increases to 82.99%. If compare the third component with the second component we can see that in the third component the Fresh, Delicatessen and Frozen features have a high number. Finally if we look at the fourth principal component we can see that the variance keeps decreasing and a high value for Frozen and Delicatessen.</p>
+The first principal component has a highest variance (44.30%) while the second princial has the second highest variance(26.38%) from the 6 principal components calculated. We can see that the first principal component that 3 features seem to be correlated (Detergents_Paper, Grocery and Milk), the type of customer that buy this type of products could be a small cafe. In the second principal component does not overlap the first princial component as the features here are features here are Fresh, Frozen and Delicatessen, probably a restaurant could be the type of customer that better represents by this PCA. We can see that the second PCA highly relies on Fresh, Frozen and Delicatessen where the first PCA completely relies on diferent categories Milk , Grocery and Detergent_Papper categorries, this means they're orthogonal. The variance combianed from the first and second principal components is 70.68% and if the third principal component the variance increases to 82.99%, the cumulate variance after the fourth PCA is 93.10% and including with the fifth PCa is 97.95%. If compare the third component with the second component we can see that in the third component the Fresh, Delicatessen and Frozen features have a high number. Finally if we look at the fourth principal component we can see that the variance keeps decreasing and a high value for Frozen and Delicatessen.</p>
 
 </div>
 </div>
@@ -19706,7 +19715,7 @@ The advantages of K-Means are:</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[80]:</div>
+<div class="prompt input_prompt">In&nbsp;[89]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Apply your clustering algorithm of choice to the reduced data </span>
@@ -19714,22 +19723,23 @@ The advantages of K-Means are:</p>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">silhouette_score</span>
 <span class="n">reduced_samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pca_samples</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Dimension 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Dimension 2&#39;</span><span class="p">])</span>
 
-<span class="n">clusterer</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span><span class="mi">35</span><span class="p">)</span>
-<span class="n">clusterer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span> <span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="n">clusterer</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+    <span class="n">clusterer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">)</span>
+    
+    <span class="c1"># TODO: Predict the cluster for each data point</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">)</span>
 
-<span class="c1"># TODO: Predict the cluster for each data point</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">)</span>
+    <span class="c1"># TODO: Find the cluster centers</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">cluster_centers_</span>
+    <span class="k">print</span> <span class="s2">&quot;Centers: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>
 
-<span class="c1"># TODO: Find the cluster centers</span>
-<span class="n">centers</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">cluster_centers_</span>
-<span class="k">print</span> <span class="s2">&quot;Centers: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>
+    <span class="c1"># TODO: Predict the cluster for each transformed sample data point</span>
+    <span class="n">sample_preds</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">reduced_samples</span><span class="p">)</span>
 
-<span class="c1"># TODO: Predict the cluster for each transformed sample data point</span>
-<span class="n">sample_preds</span> <span class="o">=</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">reduced_samples</span><span class="p">)</span>
-
-<span class="c1"># TODO: Calculate the mean silhouette coefficient for the number of clusters chosen</span>
-<span class="n">score</span> <span class="o">=</span> <span class="n">silhouette_score</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">,</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="s2">&quot;KMeans score: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+    <span class="c1"># TODO: Calculate the mean silhouette coefficient for the number of clusters chosen</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">silhouette_score</span><span class="p">(</span><span class="n">reduced_data</span><span class="p">,</span> <span class="n">clusterer</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;Number of clusters: {} KMeans score: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -19744,7 +19754,67 @@ The advantages of K-Means are:</p>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Centers: [[-2.17322969  0.15659534]
  [ 1.49093664 -0.10743169]]
-KMeans score: 0.426281015469
+Number of clusters: 2 KMeans score: 0.426281015469
+Centers: [[ 1.74395866  0.04085513]
+ [-1.59016368 -1.23678893]
+ [-1.90807636  2.0962454 ]]
+Number of clusters: 3 KMeans score: 0.39689092645
+Centers: [[-2.19223383 -0.80581777]
+ [ 2.10449052  0.93849594]
+ [ 0.89218367 -1.1591779 ]
+ [-2.1813241   2.15992058]]
+Number of clusters: 4 KMeans score: 0.331779859971
+Centers: [[ 0.20354868  0.96017905]
+ [-2.31866503 -0.86151491]
+ [ 0.93505722 -1.59787043]
+ [-2.6211031   2.42705305]
+ [ 2.54277721  0.49816301]]
+Number of clusters: 5 KMeans score: 0.352830468888
+Centers: [[ 0.04321922  0.35397759]
+ [ 2.28433265 -0.08359701]
+ [ 1.57776098  3.28825217]
+ [-2.58215121  2.21704992]
+ [-2.51427159 -0.80101731]
+ [ 0.24358515 -2.11640401]]
+Number of clusters: 6 KMeans score: 0.363452635638
+Centers: [[-2.55188835 -0.75806396]
+ [-0.04430456  0.59288268]
+ [ 1.70572316 -0.80896463]
+ [-2.70249643  2.27374251]
+ [-0.13241417 -2.22045954]
+ [ 2.67812134  0.70552983]
+ [ 1.78233895  3.98557761]]
+Number of clusters: 7 KMeans score: 0.361918879789
+Centers: [[ 1.70069242 -0.90470816]
+ [-3.32010654 -1.02960444]
+ [-2.59618571  2.24680626]
+ [ 3.14390795  0.53403964]
+ [ 0.01859003 -2.38843835]
+ [ 1.84286704  4.11393892]
+ [-1.52220587 -0.44527942]
+ [ 0.68841253  0.70716728]]
+Number of clusters: 8 KMeans score: 0.348927264652
+Centers: [[ 1.49229509  0.98761016]
+ [-1.78676707 -0.59131806]
+ [ 3.71788065  1.00252329]
+ [-2.60898954  1.86441315]
+ [ 0.02817376  4.79374534]
+ [ 1.85284796 -0.89101691]
+ [-0.0129123   0.22948765]
+ [ 0.01608038 -2.42286846]
+ [-3.43560231 -1.2491619 ]]
+Number of clusters: 9 KMeans score: 0.357014323126
+Centers: [[-1.87269526 -0.69173837]
+ [ 1.29439154  0.9819409 ]
+ [-2.63501169  1.88009404]
+ [ 1.6827467  -0.94119992]
+ [-0.04076988 -2.48330073]
+ [ 3.40268483  0.41740414]
+ [-1.31948733  5.41268758]
+ [-3.58371165 -1.194005  ]
+ [ 2.25703274  3.67562117]
+ [-0.17583251  0.18566484]]
+Number of clusters: 10 KMeans score: 0.364870309555
 </pre>
 </div>
 </div>
@@ -20636,7 +20706,7 @@ Customer index 100 - predicted to be Cluster 0 (convenience store): The predicti
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
 A change in the delivery service from 5 days a week to 3 days a week, could be painful for customers in both Segments, but specially for customers in "Segment 0". The customers in customers in this segment, buy high quantities of perishable products (Fresh, Milk, Grocery). To avoid shipping expired products to customers the wholesale department would have to better control on the stocks and expiration dates of the products, this might be a expensive task to coordinate. Customers in Segment 1 should not be as impacted as there not as many perishable products in this segment.</p>
-<p>The wholesale store should consider than changing the delivery dates to 3 per week, can potencially make customer unhappy, as most the online stores offer same day delivery using google express or amazon prime. Decreasing the delvivery dates will not necessarily save money, it can increase costs in keeping a more control stocks in products, specially with perishable products. Also customer might consider shopping in stores that offer a faster shipping.</p>
+<p>The wholesale store can test than changing the delivery dates to 3 per week, to a small set of customers that doens't order many products from the "Fresh" category. After this test, the wholesale company can conduct a survey to evaluate the result of this experiment. Once this experiment is over, the company should evaluate if is a good idea to test the change in delivery to a different segment of customers.</p>
 
 </div>
 </div>
@@ -20660,6 +20730,7 @@ A change in the delivery service from 5 days a week to 3 days a week, could be p
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
 Based on the provided anual spending estimates a supervised model could be train to predict which would be the most appropiate delivery service. The model should also consider the which is the type of products the new customers are going to buy, as we saw the category of the products will help to determine which segment the customers are assigned to.</p>
+<p>Using the result of the customer assigment to a  cluster could be used as a feature. This new feature could be used as an input variable for a new model to come up with new predictions like the type of customer, most most like category of products to purchase.</p>
 
 </div>
 </div>
