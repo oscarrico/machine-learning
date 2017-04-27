@@ -23,6 +23,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Set any additional class parameters as needed
+        self.T = 0.0
 
 
     def reset(self, destination=None, testing=False):
@@ -39,6 +40,16 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
+        if testing:
+
+            self.epsilon = 0.0
+            self.alpha = 0.0
+        else:
+            self.T = self.T + 1.0
+            #self.epsilon = self.epsilon - 0.05;
+            #self.epsilon = 1.0 / ( (self.T * self.T) + (self.alpha * self.T))
+            #self.epsilon = self.epsilon = 1.0 / (self.T **2)
+            self.epsilon = math.fabs(math.cos(self.alpha * self.T))
 
         return None
 
@@ -55,13 +66,18 @@ class LearningAgent(Agent):
         ########### 
         ## TO DO ##
         ###########
-        # Set 'state' as a tuple of relevant data for the agent        
-        state = None
+        # Set 'state' as a tuple of relevant data for the agent      
+        state =  {
+        "light": inputs["light"], 
+        "oncoming": inputs["oncoming"], 
+        "left": inputs["left"], 
+        "direction": waypoint
+        }
 
         return state
 
 
-    def get_maxQ(self, state):
+    def get_maxQ(self, hash_key):
         """ The get_max_Q function is called when the agent is asked to find the
             maximum Q-value of all actions based on the 'state' the smartcab is in. """
 
@@ -70,7 +86,10 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
 
-        maxQ = None
+        maxQ = -1000.0
+        for action in self.Q[hash_key]:
+            if maxQ < self.Q[hash_key][action]:
+                maxQ = self.Q[hash_key][action]
 
         return maxQ 
 
@@ -84,8 +103,34 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
+        state_key = self.hash_key(state)
+        print "state: {}".format(state_key)
+        if self.learning:
+            self.Q[state_key] = self.Q.get(state_key, {None:0.0, 'forward':0.0, 'left':0.0, 'right':0.0})
+        #print self.Q
+        return state
 
         return
+
+    def hash_key(self, state):
+        """ Method to create the key string object based on the state passed """
+        light = state['light']
+        oncoming = state['oncoming']
+        left = state['left']
+        direction = state['direction']
+
+        if light is None:
+            light = 'None'
+        if oncoming is None:
+            oncoming = 'None'
+        if left is None:
+            left = 'None'
+        if direction is None:
+            direction = 'None'
+
+        
+        return str(light + '_' + oncoming + '_' + left + '_' + direction)
+
 
 
     def choose_action(self, state):
@@ -103,6 +148,21 @@ class LearningAgent(Agent):
         # When not learning, choose a random action
         # When learning, choose a random action with 'epsilon' probability
         #   Otherwise, choose an action with the highest Q-value for the current state
+        if not self.learning:
+            actionSelected = random.choice(self.valid_actions)
+            print "Not Learning....setting action: {}".format(random.choice(self.valid_actions))
+            action = actionSelected
+        else:
+            if self.epsilon > 0.01 and self.epsilon > random.random():
+                action = random.choice(self.valid_actions)
+            else:
+                possible_actions = []
+                hash_key = self.hash_key(state)
+                maxQ = self.get_maxQ(hash_key)
+                for action in self.Q[hash_key]:
+                    if maxQ == self.Q[hash_key][action]:
+                        possible_actions.append(action)
+                action = random.choice(possible_actions)
  
         return action
 
@@ -117,6 +177,10 @@ class LearningAgent(Agent):
         ###########
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
+        hash_key = self.hash_key(state)
+        if self.learning:
+            self.Q[hash_key][action] = self.Q[hash_key][action] + self.alpha * (reward-self.Q[hash_key][action])
+            #self.Q[hash_key][action] = (1 - self.alpha) * self.Q[hash_key][action] + (reward * self.alpha)
 
         return
 
@@ -153,13 +217,13 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    agent = env.create_agent(LearningAgent)
+    agent = env.create_agent(LearningAgent, learning=True, epsilon= 1.0, alpha = 0.01)
     
     ##############
     # Follow the driving agent
     # Flags:
     #   enforce_deadline - set to True to enforce a deadline metric
-    env.set_primary_agent(agent)
+    env.set_primary_agent(agent, enforce_deadline= True )
 
     ##############
     # Create the simulation
@@ -168,15 +232,14 @@ def run():
     #   display      - set to False to disable the GUI if PyGame is enabled
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
-    sim = Simulator(env)
+    sim = Simulator(env, update_delay=0.01, display= False,  log_metrics=True, optimized= True)
     
     ##############
     # Run the simulator
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run()
-
+    sim.run(tolerance=0.001, n_test=150)
 
 if __name__ == '__main__':
     run()
