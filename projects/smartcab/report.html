@@ -11875,7 +11875,7 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-It looks like while running the simulation, the smartcab it's not moving, we can see this at the top of the display "Agent not updated". It is also inidcated that the smartcab is not moving because it's not taking any actions. Base on some conditions there are cases when taking not actions(stand still) makes sense, in cases when there is a stop light, traffict in front of it, this will produce a postive reward. Postive rewards are being indicated in green and negative rewards are being reflected in red.</p>
+It looks like while running the simulation, the smartcab it's not moving, we can see this at the top of the display "Agent not updated". It is also inidcated that the smartcab is not moving because it's not taking any actions. Base on some conditions there are cases when taking not actions(stand still) makes sense, in cases when there is a stop light, traffict in front of it, this will produce a postive reward. At the point the agent is not moving, the agent is getting postive rewards when the light is red, which is the right thing to do. However when the light turns green the agent is still not moving which reflects in negative rewards.</p>
 
 </div>
 </div>
@@ -13108,11 +13108,11 @@ mZmZVYkTLDMzMzMzsypxgmVmZmZmZlYl/x+V+Vkh5qJcdAAAAABJRU5ErkJggg==
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <ul>
-<li><p>The agent made bad decision close to 50% of the time. I could see that at beginning of the trials almost 42% of the bads actions resulted in major accidents(7%). Later the agent got better at the middle of the testing trials and we could a decrease of number of total bad actions, the number of majar accidents was 5% at that moment.</p>
+<li><p>The agent made bad decision close to 41% of the time. I could see that at beginning of the trials almost 42% of the bads actions resulted in major accidents(7%). Later the agent got better at the middle of the testing trials and we could a decrease of number of total bad actions, the number of majar accidents was 5% at that moment.</p>
 </li>
 <li><p>The realiability rate got an F, this result makes sense because the actions taken randomly and it's not considerenring that the agent needs to reach the destination in time.</p>
 </li>
-<li><p>The rewards that the agent is getting are increading while the number of trials increases, from -6  to  -4. This probably could be explanined because at the same time the number of bad actions(major accidents) are decreasing while the number of trial training increases, which means it is not penalized heavily.</p>
+<li><p>The rewards that the agent is getting are increased while the number of trials increases, from -6  to  -4. This probably could be explanined because at this point the agent is not learning, its only collecting negative rewards in every trial, which means it is not penalized heavily for bad actions.</p>
 </li>
 <li><p>We can see that as the number of trial increases the reliability rate does not change significantly, and starts decreasing from around 30% at the begining to 10% at the end. The safety rate is interesting at the begining of the trials we can see big number of bad actions aroud 42% then we can see at drop at the middle of trials to around 35%, but at the end of the trials the number of bad actions increases again to 50%.</p>
 </li>
@@ -13179,9 +13179,14 @@ mZmZVYkTLDMzMzMzsypxgmVmZmZmZlYl/x+V+Vkh5qJcdAAAAABJRU5ErkJggg==
 </li>
 <li><p>oncoming - This feature can be used to determine when a car is coming the opposite direction and if  it is trying to turn left turn. The agent will use this feature to improve safety and reduce traffic violations.</p>
 </li>
-<li><p>right - the agent can use this feature to determine if there is a car present on the right before turning right. This feature will help improve safety.</p>
+<li><p>waypoint(direction) - The agent needs to know the destination so it can take the correct actions to get there.</p>
 </li>
-<li><p>deadline - This feature can help to improve the reliability of the agent, maybe in cases where the number of remaining actions is getting closer to zero, the agent could decide that making a minor traffic violation to make sure it's going to get to the destination in time.</p>
+</ul>
+<p>The following features can be excluded:</p>
+<ul>
+<li><p>right - This feature helps to determine if there is a car present on the right, and the direction of that the car in right is planning to move. When the agent is stop at in a red light, knowing if there is a car on the right is irrelevant, because accoring with the traffic rules the agent should not move on a right light. Also according to the US traffic turning right is pretty straightforward, the  turn right while the light is red, unless a NO TURN ON RED sign is posted at the intersection, therefore knowing if a car is present in the right is not that useful.</p>
+</li>
+<li><p>deadline - This feature can help to improve the reliability of the agent, maybe in cases where the number of remaining actions is getting closer to zero, the agent could decide that making a minor traffic violation to make sure it's going to get to the destination in time. However is other to simplify the model of our enviroment the agent can improve the reliability based on the regards that it receives on the learning phase.</p>
 </li>
 </ul>
 
@@ -13217,10 +13222,18 @@ mZmZVYkTLDMzMzMzsypxgmVmZmZmZlYl/x+V+Vkh5qJcdAAAAABJRU5ErkJggg==
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong>
-For the "waypoint" feature there are 3 states (left, right, forward). For the "light" feature there are 2 possible states (red and green). For the "left" and "right" there are 4 states for each one(None, forward, left, right). For the "oncoming" feature we have 4 possible states(None, forward, left, right).</p>
+For the "waypoint"(direction) feature there are 3 states (left, right, forward). For the "light" feature there are 2 possible states (red and green). For the "left" and "right" there are 4 states for each one(None, forward, left, right). For the "oncoming" feature we have 4 possible states(None, forward, left, right).</p>
 <ul>
 <li>3 X 2 X 4 X 4 X 4 = 384</li>
 </ul>
+<p>In other to simplify the enviroment we can only consider:</p>
+<ul>
+<li>waypoint: 3 states (left, right, forward).</li>
+<li>light:  2 states (red and green).</li>
+<li>left:  4 states (None, forward, left, right).</li>
+<li>oncoming: 4  states(None, forward, left, right). </li>
+</ul>
+<p>Solution: 3 X 2 X 4 X 4 = 96</p>
 <p>The number seems like a reasonable number and the agent should be able to handle a policy for every state.</p>
 
 </div>
@@ -21733,7 +21746,8 @@ sERERERERIpECZaIiIiIiEiRKMESEREREREpEiVYIiIiIiIiRaIES0REREREpEiUYImIiIiIiBTJ
 <li>I made tried multiple decaying functions and tested them with multiple values for epsilon, the two functions that got the better results were:</li>
 </ul>
 $$ \hspace{50px}\epsilon = \frac{1}{t^2}\hspace{50px} \epsilon = \cos(at), \textrm{for } 0 < a < 1$$<ul>
-<li><p>The function that I decided to use was epsilon = ASB(COS(at)), tolerance=0.001, alpha=0.01, and 20 testing trials simulated. It is clear to see that final optimized agent the bad actions( major/ minor accidents, traffic violations) went significally down as the number of training trials increased.</p>
+<li>The function that I decided to use was epsilon = ASB(COS(at)), tolerance=0.001, alpha=0.01, and 20 testing trials simulated. It is clear to see that final optimized agent the bad actions( major/ minor accidents, traffic violations) went significally down as the number of training trials increased. </li>
+<li><p>epsilon=ABS(COS(at)) given that a: alpha = 0.01 and t starts equals to 1 for each trial(training): we have that epsilon-tolerance of 0.001. This give us: COS(0.01x157) = COS(1.57) = 0.0 &lt; 0.001.</p>
 </li>
 <li><p>Approximately it tool around 150 training test before  the agent started testing. This implementation for an rate of A+ for Safety and A for Realiability rate.</p>
 </li>
@@ -21782,6 +21796,19 @@ Below is how I defined the state tuple:</p>
         "direction": waypoint
         }</p>
 <ul>
+<li><p>The following state is an example of an optimal state</p>
+</li>
+<li><p>red_None_None_forward</p>
+<ul>
+<li>forward : -3.19</li>
+<li>left : -3.39</li>
+<li>right : 0.25</li>
+<li>None : 1.33</li>
+</ul>
+<p>In this state the light is "red" and the agent is trying to go forward, also there are not oncoming cars nor cars in the left. The US traffic laws are very simple in this case there all the cars must stop on a "red" light, the only condition is while turning right on a red right, but this is not the case. As we can see the state models the correct action that the agent should take, "not move" in this case, as the action with the hightest value is "None" with 1.33.</p>
+</li>
+</ul>
+<ul>
 <li><p>The following state is an example of a suboptimal state, I would expect that the reward for moving forward would be bigger than the "None" action:</p>
 </li>
 <li><p>green_left_right_forward</p>
@@ -21791,7 +21818,7 @@ Below is how I defined the state tuple:</p>
 <li>right : -0.00</li>
 <li>None : 0.02</li>
 </ul>
-<p>In this state the light is green, the agent is trying to move forward. In this case according to the traffic rules the car has the right to go forward, but we can see that both forward and None(not moving) has the same reward. If the Smartcab decides to use the "None" action(not move) will cause a traffic violation and potencially a minor traffic accident as the the cars becoming behind can collide with our not moving agent, this is a suboptimal state.</p>
+<p>In this state the light is green, the agent is trying to move forward. In this case according to the traffic rules the car has the right to go forward, but we can see that both forward and None(not moving) has the same reward. Given this state, if the Smartcab could decide to use the "None" action(not move), in the US traffic law not moving when there a green light will cause a traffic violation due to there is a risk of causing a traffic accident as the the cars becoming behind can collide with our not moving agent, this is a suboptimal state.</p>
 </li>
 </ul>
 
