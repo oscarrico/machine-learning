@@ -1,6 +1,6 @@
 from yahoo_finance import Share
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.svm import SVR
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV
@@ -15,9 +15,8 @@ import numpy as np
 STOCKS = ['GOOG', 'AAPL', 'AMZN', 'MSFT']
 
 def get_file_name(stock):
-	#now = datetime.datetime.now().strftime("%Y-%m-%d")
-	#return 'datasets/{}_{}.csv'.format(stock, now)
-	return 'datasets/{}.csv'.format(stock)
+    #Method to read file from datasets folder
+    return 'datasets/{}.csv'.format(stock)
 
 def save_file(stock):
 	""" This function saves the current dataset"""
@@ -34,18 +33,23 @@ def read_from_file(stock):
     	usecols = ['Date','Open','High','Low','Close','Volume', 'Adj Close'])
     #print dataset.head()
 
+    print dataset.corr()
+
     y_all = dataset['Adj Close']
     X_all = dataset.drop(['Adj Close'], axis = 1)
-    X_all['Trade Date'] = X_all.index
-    date_ordinal = X_all['Trade Date'].apply(lambda x: x.toordinal())
+    #X_all = dataset.drop(['Date'], axis = 1)
+
+
+    #X_all['Trade Date'] = X_all.index
+    #date_ordinal = X_all['Trade Date'].apply(lambda x: x.toordinal())
     
-    X_all = X_all.drop(['Trade Date'], axis = 1)
-    X_all = X_all.join(date_ordinal)
+    #X_all = X_all.drop(['Trade Date'], axis = 1)
+    #X_all = X_all.join(date_ordinal)
     #X_all = X_all['Trade Date'].apply(lambda x: x.toordinal())
     #print date_ordinal.head()
 
-    #print X_all.head()
-    #print y_all.head()
+    print X_all.head()
+    print y_all.head()
 
     #print X_all.head()
     # y = pd.read_csv(get_file_name(stock), index_col = 'Date', parse_dates = True, 
@@ -70,13 +74,26 @@ def plot_results(X_test, X_train, y_test, y_train, model, y):
 	ax.plot_date(stock_date_test, y_test, color ='r', label = 'Test data', linewidth=1)
 	ax.plot_date(stock_date_train, y_train, color ='b', label = 'Train data', linewidth=1)
 	#plt.plot(X_test, model.predict(y_test), color = 'b')
-	ax.set_ylabel('Price')
-	ax.set_xlabel('Date')
-	stock_date_test = stock_date_test.sort_values(['Date'])
+	#ax.set_ylabel('Price')
+	#ax.set_xlabel('Date')
+
+	
+	#print "=======================X_test{}".format(X_test.shape)
+	#print "+++++++++++++++++++++{}".format(y_test.shape)
+	
+
+	#stock_date_test = stock_date_test.sort_values(['Date'])
 	#[y.min(), y.max()], [y.min(), y.max()]
-	print stock_date_test.head()
-	ax.plot(stock_date_test, model.predict(X_test), color='black', linewidth=1)
+	#print stock_date_test.head()
+	#ax.plot(stock_date_test, model.predict(X_test), color='black', linewidth=1)
 	#ax.plot(stock_date_test, y_test, 'k--', lw=4)
+	#plt.clf()
+	#plt.scatter(X_test['High'], y_test, color ='r', label = 'Test data', linewidth=1)
+	#plt.scatter(X_train['High'], y_train, color ='b', label = 'Train data', linewidth=1)
+	#plt.plot(X_test['High'], model.predict(X_test), color='black', linewidth=1)
+
+
+
 	plt.legend()
 	plt.axis('tight')
 	#plt.title('Model {}'.format(model))
@@ -118,7 +135,7 @@ def linear_model(X, y):
 	X_train, X_test, y_train, y_test = split_data(X, y)
 	model = LinearRegression()
 	model.fit(X_train, y_train)
-	#print '{}'.format(model.score(X_test, y_test))
+	print '{}'.format(model.score(X_test, y_test))
 	#print 'Predict {}'.format(model.predict(X_test))
 	#stock_date_test = 
 	#stock_price_test = y_test.drop('Date', 1)
@@ -142,6 +159,7 @@ def linear_model(X, y):
 	#print "{}".format(stock_date_test)
 	#print "{}".format(y_test)
 	plot_results(X_test, X_train, y_test, y_train, model, y)
+	return model
 
 
 
@@ -176,6 +194,13 @@ def svr_model(X, y):
 
 	plot_results(X_test, X_train, y_test, y_train, model, y)
 
+def lasso_model(X, y):
+	X_train, X_test, y_train, y_test = split_data(X, y)
+	model = Lasso(alpha=0.1, max_iter=10000)
+	model.fit(X_train, y_train)
+	print '{}'.format(model.score(X_test, y_test))
+
+
 def neighbors_model(X, y):
 	X_train, X_test, y_train, y_test = split_data(X, y)
 	parameters = {'weights':('uniform', 'distance'), 'n_neighbors':[2,3,5]}
@@ -206,12 +231,10 @@ def run():
 	#save_file('Google')
 	stock = main(sys.argv[1:])
 	X, y = read_from_file(stock)
-	#print "y {}".format(y.shape)
-	#print "X {}".format(X.shape)
-	#plot(stock, y)
-	linear_model(X, y)
-	#neighbors_model(X, y)
-	svr_model(X, y)
+
+	
+	#linear_model(X, y)
+	lasso_model(X, y)
 
 
 
