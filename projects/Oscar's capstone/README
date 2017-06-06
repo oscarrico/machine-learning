@@ -9,7 +9,7 @@ datetime
 sys
 getopt
 
-The project can executed in the following ways:
+The project can be executed in the following ways:
 
 
 1.- Using the jupyter notebook stock_prediction.ipynb
