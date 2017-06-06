@@ -1,4 +1,3 @@
-from yahoo_finance import Share
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.svm import SVR
@@ -6,7 +5,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import cross_val_predict, cross_val_score
 from sklearn.dummy import DummyRegressor
-import pandas_datareader.data as web
 import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -168,18 +166,17 @@ def neighbors_model(X_train, X_test, y_train, y_test, X, y):
 
 
 def run():
-	#save_file('Google')
 	stock = main(sys.argv[1:])
 	X, y = read_from_file(stock)
 	X_train, X_test, y_train, y_test = split_data(X, y)
 	plot_split_results(X_train, X_test, y_train, y_test)
 
 	benchmark(X_train, X_test, y_train, y_test)
-	#svr_model(X_train, X_test, y_train, y_test, X, y)
-	#neighbors_model(X_train, X_test, y_train, y_test, X, y)
-	#linear_model(X_train, X_test, y_train, y_test)
-	#lasso_model(X_train, X_test, y_train, y_test)
-	#linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
+	svr_model(X_train, X_test, y_train, y_test, X, y)
+	neighbors_model(X_train, X_test, y_train, y_test, X, y)
+	linear_model(X_train, X_test, y_train, y_test)
+	lasso_model(X_train, X_test, y_train, y_test)
+	linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
 	lasso_model_tunned(X_train, X_test, y_train, y_test, X, y)
 
 

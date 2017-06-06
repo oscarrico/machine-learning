@@ -1,0 +1,29 @@
+ The project was created using Python 2.7 and the following libraries:
+
+jupyter - 1.0.0
+numpy - 1.11.3
+matplotlib - 2.0.0
+pandas - 0.19.2
+sklearn - 0.18.1
+datetime
+sys
+getopt
+
+The project can executed in the following ways:
+
+
+1.- Using the jupyter notebook stock_prediction.ipynb
+2.- Executing the python CLI:
+
+        stock_prediction.py -s <stock_symbol>
+
+    Where the stock symbols could be:
+
+    	'GOOG', 'AAPL', 'AMZN', 'MSFT'
+
+    Example, running the sotck predictor for Google stock:
+
+    	python stock_prediction.py -s GOOG
+
+
+
