@@ -20,13 +20,26 @@ def get_file_name(stock):
 def read_from_file(stock):
 	#index_col = 'Date'
     dataset = pd.read_csv(get_file_name(stock), parse_dates = True, index_col = 'Date',
-    	usecols = ['Date','Open','High','Low','Close','Volume', 'Adj Close'])
+    	usecols = ['Date','Open','High','Low','Close','Volume', 'Adj Close'], na_values=['nan'])
     #print dataset.head()
-    print dataset.corr()
-    y_all = dataset['Adj Close']
-    X_all = dataset.drop(['Adj Close'], axis = 1)
+    #print dataset.corr()
+    dataset.sort_index(ascending=True, axis=0)
+    #y_all = dataset['Adj Close']
+    #X_all = dataset.drop(['Adj Close'], axis = 1)
+    dataset['Tomorrows Date'] = dataset['Adj Close']
+    dataset['Tomorrows Date'] = dataset['Tomorrows Date'].shift(-1)
+
+
+    y_all = dataset['Tomorrows Date']
+    X_all = dataset.drop(['Tomorrows Date'], axis = 1)
+
+
+    #print dataset.head()
+    print "*****************X**************"
     print X_all.head()
+    print "*****************Y**************"
     print y_all.head()
+    #print y_all.head()
     return X_all, y_all
 
 def plot(stock, df, column = 'Adj Close'):
@@ -35,7 +48,7 @@ def plot(stock, df, column = 'Adj Close'):
 	ax.set_xlabel('Date')
 	plt.show()
 
-def plot_split_results(X_test, X_train, y_test, y_train):
+def plot_split_results(X_train, X_test, y_train, y_test):
 	stock_date_test = pd.DataFrame()
 	stock_date_train = pd.DataFrame()
 	stock_date_test['Date'] = X_test.index
@@ -50,6 +63,14 @@ def plot_split_results(X_test, X_train, y_test, y_train):
 
 	plt.legend()
 	plt.title('Splitted dataset')
+	plt.show()
+
+def plot_results(X_test, y_test, model, name):
+	plt.title("Actual stock procies / Predicted stock prices using: {}".format(name))
+	plt.xlabel("Predictted")
+	plt.ylabel("Actual results")
+	plt.scatter(model.predict(X_test), y_test, color='red', label = 'predicted')
+	plt.legend()
 	plt.show()
 
 def plot_tunned_model(name, model, X, y):
@@ -93,9 +114,13 @@ def main(argv):
 
 def split_data(X, y):
 	print "********************Splitting the Data******************"
-	print X.shape
-	print y.shape
-	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+	#rint X.shape
+	#print y.shape
+	training_size = int((len(X)-1) * 0.80)
+	X_train, X_test = X[0:training_size], X[training_size:len(X)-1] 
+	y_train, y_test = y[0:training_size], y[training_size:len(X)-1]
+	#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
+	print y_test.tail()
 	return X_train, X_test, y_train, y_test
 
 def benchmark(X_train, X_test, y_train, y_test):
@@ -168,16 +193,18 @@ def neighbors_model(X_train, X_test, y_train, y_test, X, y):
 def run():
 	stock = main(sys.argv[1:])
 	X, y = read_from_file(stock)
+	#split_data(X, y)
 	X_train, X_test, y_train, y_test = split_data(X, y)
-	plot_split_results(X_train, X_test, y_train, y_test)
+	#plot_split_results(X_train, X_test, y_train, y_test)
 
-	benchmark(X_train, X_test, y_train, y_test)
-	svr_model(X_train, X_test, y_train, y_test, X, y)
-	neighbors_model(X_train, X_test, y_train, y_test, X, y)
-	linear_model(X_train, X_test, y_train, y_test)
-	lasso_model(X_train, X_test, y_train, y_test)
-	linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
-	lasso_model_tunned(X_train, X_test, y_train, y_test, X, y)
+	#benchmark(X_train, X_test, y_train, y_test)
+	#svr_model(X_train, X_test, y_train, y_test, X, y)
+	#neighbors_model(X_train, X_test, y_train, y_test, X, y)
+	model = linear_model(X_train, X_test, y_train, y_test)
+	plot_results(X_test, y_test, model, 'Linear Regression')
+	#lasso_model(X_train, X_test, y_train, y_test)
+	#linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
+	#lasso_model_tunned(X_train, X_test, y_train, y_test, X, y)
 
 
 
