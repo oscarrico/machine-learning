@@ -33,6 +33,8 @@ def read_from_file(stock):
   
     y_all = dataset['Tomorrows Date']
     X_all = dataset.drop(['Tomorrows Date'], axis = 1)
+    print X_all.head()
+    print y_all.head()
 
     return X_all, y_all
 
@@ -119,7 +121,7 @@ def split_data(X, y):
 	print X_test.head()
 	print y_train.head()
 	print y_test.head()
-	#return X_train, X_test, y_train, y_test
+	return X_train, X_test, y_train, y_test
 
 def benchmark(X_train, X_test, y_train, y_test):
 	print "********************DummyRegressor Model******************"
@@ -192,18 +194,17 @@ def run():
 	stock = main(sys.argv[1:])
 	X, y = read_from_file(stock)
 	#split_data(X, y)
-	#X_train, X_test, y_train, y_test = 
-	split_data(X, y)
-	#plot_split_results(X_train, X_test, y_train, y_test)
+	X_train, X_test, y_train, y_test = split_data(X, y)
+	plot_split_results(X_train, X_test, y_train, y_test)
 
 	#benchmark(X_train, X_test, y_train, y_test)
-	#svr_model(X_train, X_test, y_train, y_test, X, y)
-	#neighbors_model(X_train, X_test, y_train, y_test, X, y)
+	svr_model(X_train, X_test, y_train, y_test, X, y)
+	neighbors_model(X_train, X_test, y_train, y_test, X, y)
 	#model = linear_model(X_train, X_test, y_train, y_test)
 	#plot_results(X_test, y_test, model, 'Linear Regression')
 	#lasso_model(X_train, X_test, y_train, y_test)
-	#linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
-	#lasso_model_tunned(X_train, X_test, y_train, y_test, X, y)
+	linear_model_tunned(X_train, X_test, y_train, y_test, X, y)
+	lasso_model_tunned(X_train, X_test, y_train, y_test, X, y)
 
 
 
